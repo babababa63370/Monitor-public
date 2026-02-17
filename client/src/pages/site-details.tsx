@@ -53,7 +53,7 @@ export default function SiteDetails() {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = async () => {
     try {
       await deleteSite.mutateAsync(siteId);
       setLocation("/");
@@ -155,7 +155,7 @@ export default function SiteDetails() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
+                  <AlertDialogAction onClick={handleDeleteClick} className="bg-destructive hover:bg-destructive/90">
                     Delete
                   </AlertDialogAction>
                 </AlertDialogFooter>

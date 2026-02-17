@@ -55,8 +55,8 @@ export function AddSiteDialog() {
           Add Site
         </Button>
       </DialogTrigger>
-      <DialogContent className="glass-card sm:max-w-[425px]">
-        <DialogHeader>
+      <DialogContent className="glass-card w-[95vw] max-w-[425px] p-4 sm:p-6 overflow-y-auto max-h-[90vh]">
+        <DialogHeader className="mb-4">
           <DialogTitle>Monitor New Site</DialogTitle>
           <DialogDescription>
             Enter the details of the website you want to monitor.
@@ -71,7 +71,7 @@ export function AddSiteDialog() {
                 <FormItem>
                   <FormLabel>Site Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My Portfolio" {...field} />
+                    <Input placeholder="My Portfolio" {...field} className="h-10" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,7 +84,7 @@ export function AddSiteDialog() {
                 <FormItem>
                   <FormLabel>URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
+                    <Input placeholder="https://example.com" {...field} className="h-10" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,6 +102,7 @@ export function AddSiteDialog() {
                       min={1} 
                       placeholder="5" 
                       {...field} 
+                      className="h-10"
                       onChange={e => field.onChange(parseInt(e.target.value))}
                     />
                   </FormControl>
@@ -109,8 +110,11 @@ export function AddSiteDialog() {
                 </FormItem>
               )}
             />
-            <div className="flex justify-end pt-4">
-              <Button type="submit" disabled={createSite.isPending}>
+            <div className="flex justify-end pt-4 gap-2">
+              <Button type="button" variant="outline" onClick={() => setOpen(false)} className="h-10">
+                Cancel
+              </Button>
+              <Button type="submit" disabled={createSite.isPending} className="h-10 px-6">
                 {createSite.isPending ? "Adding..." : "Start Monitoring"}
               </Button>
             </div>

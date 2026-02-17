@@ -145,7 +145,7 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <p className="text-sm font-medium">Monitoring Active</p>
-                      <p className="text-xs text-muted-foreground">Next check in 45s</p>
+                      <p className="text-xs text-muted-foreground">Checks synchronized across all sites</p>
                     </div>
                   </div>
                 </div>

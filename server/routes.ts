@@ -96,7 +96,8 @@ export async function registerRoutes(
     const sites = await storage.getSitesByUserId(req.user.id);
     const sitesWithStats = await Promise.all(sites.map(async (site) => {
       const stats = await storage.getSiteStats(site.id);
-      return { ...site, ...stats };
+      const recentLogs = await storage.getLogsBySiteId(site.id, 5); // Added recent logs for sync
+      return { ...site, ...stats, recentLogs };
     }));
     res.json(sitesWithStats);
   });

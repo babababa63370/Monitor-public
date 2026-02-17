@@ -291,47 +291,73 @@ export default function SiteDetails() {
         </div>
 
         {/* Logs Table */}
-        <Card className="glass-card">
-          <CardHeader>
+        <Card className="glass-card overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between gap-2">
             <CardTitle>Recent Logs</CardTitle>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-[10px] text-muted-foreground uppercase font-medium">UP</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-red-500" />
+                <span className="text-[10px] text-muted-foreground uppercase font-medium">DOWN</span>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="relative overflow-x-auto">
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
                 <thead className="text-xs uppercase bg-white/5 text-muted-foreground">
                   <tr>
-                    <th className="px-6 py-3 rounded-l-lg">Time</th>
-                    <th className="px-6 py-3">Status</th>
-                    <th className="px-6 py-3">Latency</th>
-                    <th className="px-6 py-3 rounded-r-lg text-right">Message</th>
+                    <th className="px-4 sm:px-6 py-3 rounded-l-lg">Time</th>
+                    <th className="px-4 sm:px-6 py-3">Status</th>
+                    <th className="px-4 sm:px-6 py-3">Latency</th>
+                    <th className="hidden sm:table-cell px-6 py-3 rounded-r-lg text-right">Message</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {logs?.slice(0, 10).map((log: Log) => (
-                    <tr key={log.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 font-mono">
-                        {log.createdAt ? format(new Date(log.createdAt), "MMM dd, HH:mm:ss") : ""}
+                <tbody className="divide-y divide-white/5">
+                  {logs?.slice(0, 15).map((log: Log) => (
+                    <tr key={log.id} className="hover:bg-white/5 transition-colors group">
+                      <td className="px-4 sm:px-6 py-4 font-mono text-[12px] sm:text-sm whitespace-nowrap">
+                        {log.createdAt ? format(new Date(log.createdAt), "HH:mm:ss") : ""}
+                        <span className="hidden lg:inline ml-2 text-muted-foreground/50">
+                          {log.createdAt ? format(new Date(log.createdAt), "MMM dd") : ""}
+                        </span>
                       </td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      <td className="px-4 sm:px-6 py-4">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider ${
                           log.status === 'UP' 
-                            ? "bg-green-500/10 text-green-400" 
-                            : "bg-red-500/10 text-red-400"
+                            ? "bg-green-500/10 text-green-400 border border-green-500/20" 
+                            : "bg-red-500/10 text-red-400 border border-red-500/20"
                         }`}>
                           {log.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-mono">
-                        {log.responseTime}ms
+                      <td className="px-4 sm:px-6 py-4 font-mono">
+                        <span className={cn(
+                          "font-bold",
+                          log.responseTime > 500 ? "text-amber-400" : 
+                          log.responseTime > 1000 ? "text-red-400" : "text-foreground"
+                        )}>
+                          {log.responseTime}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground ml-0.5">ms</span>
                       </td>
-                      <td className="px-6 py-4 text-right text-muted-foreground">
-                        {log.status === 'UP' ? 'OK' : 'Connection Timeout'}
+                      <td className="hidden sm:table-cell px-6 py-4 text-right text-muted-foreground text-xs">
+                        {log.status === 'UP' ? 'Success' : 'Timeout/Error'}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            {(!logs || logs.length === 0) && (
+              <div className="text-center py-12 text-muted-foreground">
+                <Activity className="w-8 h-8 mx-auto mb-3 opacity-20" />
+                <p>No monitoring logs available yet.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

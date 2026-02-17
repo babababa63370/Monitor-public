@@ -35,7 +35,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-background">
+    <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-2 bg-background overflow-x-hidden">
       {/* Left Panel - Branding */}
       <div className="hidden lg:flex flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/10 z-0" />

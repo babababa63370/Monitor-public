@@ -80,32 +80,32 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4 glass-card">
-            <CardHeader>
+          <Card className="col-span-1 md:col-span-2 lg:col-span-4 glass-card overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between gap-1 space-y-0 pb-2">
               <CardTitle>Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {sites?.slice(0, 5).map((site: SiteWithStats) => (
-                  <div key={site.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-2 h-2 rounded-full ${site.lastStatus === 'UP' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'}`} />
-                      <div>
-                        <p className="font-medium">{site.name}</p>
-                        <p className="text-xs text-muted-foreground">{site.url}</p>
+                  <div key={site.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors gap-3">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                      <div className={`shrink-0 w-2 h-2 rounded-full ${site.lastStatus === 'UP' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'}`} />
+                      <div className="min-w-0">
+                        <p className="font-medium truncate">{site.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{site.url}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-6">
-                      <div className="text-right">
+                    <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 border-t sm:border-t-0 pt-2 sm:pt-0">
+                      <div className="text-left sm:text-right">
                         <p className="text-sm font-mono">{site.avgResponseTime}ms</p>
                         <p className="text-xs text-muted-foreground">Latency</p>
                       </div>
-                      <div className="text-right min-w-[60px]">
+                      <div className="text-left sm:text-right min-w-[60px]">
                         <p className="text-sm font-medium">{site.uptime}%</p>
                         <p className="text-xs text-muted-foreground">Uptime</p>
                       </div>
                       <Link href={`/sites/${site.id}`}>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
                           <Activity className="w-4 h-4" />
                         </Button>
                       </Link>
@@ -121,7 +121,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="col-span-3 glass-card bg-primary/5 border-primary/20">
+          <Card className="col-span-1 md:col-span-2 lg:col-span-3 glass-card bg-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle>System Health</CardTitle>
             </CardHeader>

@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout";
 import { StatCard } from "@/components/stat-card";
 import { AddSiteDialog } from "@/components/add-site-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   Server, 
   Activity, 
@@ -13,14 +14,15 @@ import {
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { type SiteWithStats } from "@shared/schema";
 
 export default function Dashboard() {
   const { data: sites, isLoading } = useSites();
 
   const totalSites = sites?.length || 0;
-  const activeSites = sites?.filter(s => s.lastStatus === "UP").length || 0;
-  const downSites = sites?.filter(s => s.lastStatus === "DOWN").length || 0;
-  const avgResponse = sites?.reduce((acc, s) => acc + (s.avgResponseTime || 0), 0) / (totalSites || 1);
+  const activeSites = sites?.filter((s: SiteWithStats) => s.lastStatus === "UP").length || 0;
+  const downSites = sites?.filter((s: SiteWithStats) => s.lastStatus === "DOWN").length || 0;
+  const avgResponse = sites?.reduce((acc: number, s: SiteWithStats) => acc + (s.avgResponseTime || 0), 0) / (totalSites || 1);
 
   if (isLoading) {
     return (
@@ -84,7 +86,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {sites?.slice(0, 5).map(site => (
+                {sites?.slice(0, 5).map((site: SiteWithStats) => (
                   <div key={site.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className={`w-2 h-2 rounded-full ${site.lastStatus === 'UP' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'}`} />

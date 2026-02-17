@@ -209,12 +209,25 @@ export async function registerRoutes(
         const startTime = Date.now();
         let status = 'DOWN';
         try {
-          const response = await fetch(site.url, { method: 'HEAD', timeout: 5000 } as any);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000);
+          
+          const response = await fetch(site.url, { 
+            method: 'GET', // Using GET for better compatibility
+            signal: controller.signal,
+            headers: {
+              'User-Agent': 'AI-Sentinel-Bot/1.0'
+            }
+          });
+          
+          clearTimeout(timeoutId);
+          
           if (response.ok) {
             status = 'UP';
           }
         } catch (error) {
           status = 'DOWN';
+          console.error(`Ping failed for ${site.url}:`, error instanceof Error ? error.message : error);
         }
         const responseTime = Date.now() - startTime;
 

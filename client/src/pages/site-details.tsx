@@ -33,6 +33,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { type Log } from "@shared/schema";
 
 export default function SiteDetails() {
   const { id } = useParams();
@@ -43,6 +44,23 @@ export default function SiteDetails() {
   const { data: logs, isLoading: logsLoading } = useLogs(siteId);
   const analyze = useAnalyzeSite();
   const deleteSite = useDeleteSite();
+
+  const handleAnalyze = async () => {
+    try {
+      await analyze.mutateAsync(siteId);
+    } catch (error) {
+      // Error handled by hook/toast
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteSite.mutateAsync(siteId);
+      setLocation("/");
+    } catch (error) {
+      // Error handled by hook/toast
+    }
+  };
 
   if (siteLoading || logsLoading) {
     return (
@@ -58,7 +76,7 @@ export default function SiteDetails() {
   if (!site) return <Layout><div>Site not found</div></Layout>;
 
   // Prepare chart data
-  const chartData = logs?.slice(0, 50).reverse().map(log => ({
+  const chartData = logs?.slice(0, 50).reverse().map((log: Log) => ({
     time: format(new Date(log.createdAt!), "HH:mm"),
     value: log.responseTime,
     status: log.status

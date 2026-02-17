@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { insertUserSchema, insertSiteSchema } from "@shared/schema";
 import OpenAI from "openai";
+import { registerChatRoutes } from "./replit_integrations/chat";
 
 let _openai: OpenAI | null = null;
 function getOpenAI() {
@@ -148,6 +149,9 @@ export async function registerRoutes(
     res.sendStatus(204);
   });
 
+  // Register AI Chat Routes
+  registerChatRoutes(app);
+
   // Logs Routes
   app.get(api.logs.list.path, authenticateToken, async (req: any, res) => {
     const siteId = parseInt(req.params.siteId);
@@ -183,7 +187,7 @@ export async function registerRoutes(
 
     try {
       const response = await getOpenAI().chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5",
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },
       });

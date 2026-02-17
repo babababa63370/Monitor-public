@@ -30,6 +30,8 @@ export const logs = pgTable("logs", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export * from "./models/chat";
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   sites: many(sites),

@@ -104,7 +104,13 @@ export async function registerRoutes(
   app.post(api.sites.create.path, authenticateToken, async (req: any, res) => {
     try {
       const input = api.sites.create.input.parse(req.body);
-      const site = await storage.createSite({ ...input, userId: req.user.id });
+      const site = await storage.createSite({
+        name: input.name,
+        url: input.url,
+        intervalMinutes: input.intervalMinutes,
+        isActive: input.isActive,
+        userId: req.user.id
+      });
       res.status(201).json(site);
     } catch (err) {
       if (err instanceof z.ZodError) {

@@ -10,7 +10,8 @@ import {
   Sparkles, 
   ExternalLink,
   Activity,
-  Globe
+  Globe,
+  Clock
 } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -45,18 +46,18 @@ export default function SiteDetails() {
   const analyze = useAnalyzeSite();
   const deleteSite = useDeleteSite();
 
-  const handleAnalyze = async () => {
+  const handleDeleteClick = async () => {
     try {
-      await analyze.mutateAsync(siteId);
+      await deleteSite.mutateAsync(siteId);
+      setLocation("/");
     } catch (error) {
       // Error handled by hook/toast
     }
   };
 
-  const handleDeleteClick = async () => {
+  const handleAnalyze = async () => {
     try {
-      await deleteSite.mutateAsync(siteId);
-      setLocation("/");
+      await analyze.mutateAsync(siteId);
     } catch (error) {
       // Error handled by hook/toast
     }
@@ -77,19 +78,10 @@ export default function SiteDetails() {
 
   // Prepare chart data
   const chartData = logs?.slice(0, 50).reverse().map((log: Log) => ({
-    time: format(new Date(log.createdAt!), "HH:mm"),
+    time: log.createdAt ? format(new Date(log.createdAt), "HH:mm") : "",
     value: log.responseTime,
     status: log.status
   }));
-
-  const handleDelete = async () => {
-    await deleteSite.mutateAsync(siteId);
-    setLocation("/");
-  };
-
-  const handleAnalyze = async () => {
-    await analyze.mutateAsync(siteId);
-  };
 
   return (
     <Layout>
@@ -315,10 +307,10 @@ export default function SiteDetails() {
                   </tr>
                 </thead>
                 <tbody>
-                  {logs?.slice(0, 10).map((log) => (
+                  {logs?.slice(0, 10).map((log: Log) => (
                     <tr key={log.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 font-mono">
-                        {format(new Date(log.createdAt!), "MMM dd, HH:mm:ss")}
+                        {log.createdAt ? format(new Date(log.createdAt), "MMM dd, HH:mm:ss") : ""}
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${

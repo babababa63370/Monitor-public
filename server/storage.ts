@@ -54,7 +54,7 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(sites).where(eq(sites.isActive, true));
   }
 
-  async createSite(site: InsertSite): Promise<Site> {
+  async createSite(site: InsertSite & { userId: number }): Promise<Site> {
     const [newSite] = await db.insert(sites).values(site).returning();
     return newSite;
   }

@@ -165,10 +165,10 @@ export async function registerRoutes(
     if (!site) return res.status(404).json({ message: "Site not found" });
     if (site.userId !== req.user.id && req.user.role !== 'admin') return res.sendStatus(403);
 
-    const logs = await storage.getLogsBySiteId(siteId, 50); // Analyze last 50 logs
+    const siteLogs = await storage.getLogsBySiteId(siteId, 50); // Analyze last 50 logs
     
     // Construct prompt for OpenAI
-    const logsText = logs.map(l => `[${l.createdAt}] Status: ${l.status}, Response Time: ${l.responseTime}ms`).join('\n');
+    const logsText = siteLogs.map(l => `[${l.createdAt}] Status: ${l.status}, Response Time: ${l.responseTime}ms`).join('\n');
     const prompt = `
       Analyze the following server logs for site "${site.name}" (${site.url}).
       Identify any anomalies, patterns of downtime, or high latency.
@@ -182,7 +182,7 @@ export async function registerRoutes(
 
     try {
       const response = await getOpenAI().chat.completions.create({
-        model: "gpt-5.1",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },
       });
@@ -226,7 +226,7 @@ export async function registerRoutes(
         await storage.updateSiteLastChecked(site.id, now);
       }
     }
-  }, 60 * 1000); // Check every minute (can be optimized)
+  }, 30 * 1000); // Check every 30 seconds for better responsiveness
 
   return httpServer;
 }

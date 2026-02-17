@@ -50,9 +50,9 @@ export function AddSiteDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Site
+        <Button className="w-full sm:w-auto shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all gap-2">
+          <Plus className="w-4 h-4" />
+          <span>Add Site</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="glass-card w-[95vw] max-w-[425px] p-4 sm:p-6 overflow-y-auto max-h-[90vh]">

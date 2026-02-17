@@ -8,10 +8,16 @@ import jwt from "jsonwebtoken";
 import { insertUserSchema, insertSiteSchema } from "@shared/schema";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-});
+let _openai: OpenAI | null = null;
+function getOpenAI() {
+  if (!_openai) {
+    _openai = new OpenAI({
+      apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+      baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+    });
+  }
+  return _openai;
+}
 
 const JWT_SECRET = process.env.SESSION_SECRET || "default_secret";
 
@@ -169,7 +175,7 @@ export async function registerRoutes(
     `;
 
     try {
-      const response = await openai.chat.completions.create({
+      const response = await getOpenAI().chat.completions.create({
         model: "gpt-5.1",
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },

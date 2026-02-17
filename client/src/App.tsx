@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import AuthPage from "@/pages/auth-page";
 import Dashboard from "@/pages/dashboard";
+import AddSite from "@/pages/add-site";
 import SiteDetails from "@/pages/site-details";
 import Monitoring from "@/pages/monitoring";
 import NotFound from "@/pages/not-found";
@@ -31,6 +32,9 @@ function Router() {
       </Route>
       <Route path="/sites">
         <ProtectedRoute component={Dashboard} />
+      </Route>
+      <Route path="/sites/add">
+        <ProtectedRoute component={AddSite} />
       </Route>
       <Route path="/sites/:id">
         <ProtectedRoute component={SiteDetails} />

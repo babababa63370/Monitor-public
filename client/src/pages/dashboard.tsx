@@ -46,7 +46,11 @@ export default function Dashboard() {
             <h1 className="text-3xl font-bold tracking-tight glow-text">Dashboard</h1>
             <p className="text-muted-foreground mt-1">Overview of your infrastructure status.</p>
           </div>
-          <AddSiteDialog />
+          <Link href="/sites/add">
+            <Button data-testid="button-add-site">
+              Ajouter un site
+            </Button>
+          </Link>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
